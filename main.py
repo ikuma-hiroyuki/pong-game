@@ -1,7 +1,9 @@
+import time
 from turtle import Screen
 
 from ball import Ball
 from paddle import Paddle
+from scoreboard import Scoreboard
 
 screen = Screen()
 
@@ -20,10 +22,14 @@ l_paddle = Paddle((-350, 0))
 screen.onkey(l_paddle.go_up, "w")
 screen.onkey(l_paddle.go_down, "s")
 
-ball = Ball()
+ball = Ball(10)
+
+score_r = Scoreboard((100, 270))
+score_l = Scoreboard((-100, 270))
 
 gami_is_on = True
 while gami_is_on:
+    time.sleep(ball.sleep_time)
     ball.move()
     screen.update()
 
@@ -36,5 +42,14 @@ while gami_is_on:
     hitting_y = (ball.distance(l_paddle) < 50 and ball.xcor() < -330)
     if hitting_x or hitting_y:
         ball.bounce_x()
+
+    # ボールが左右の壁にぶつかったら
+    if ball.xcor() > 370:
+        ball.reset_position()
+        score_l.point()
+
+    if ball.xcor() < -370:
+        ball.reset_position()
+        score_r.point()
 
 screen.exitonclick()

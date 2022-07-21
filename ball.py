@@ -1,16 +1,16 @@
 from turtle import Turtle
 
-BALL_SPEED = 0.1
-
 
 class Ball(Turtle):
-    def __init__(self):
+    def __init__(self, speed):
         super().__init__()
+        self.sleep_time = 0.1
+        self.move_speed = speed
         self.shape("circle")
         self.penup()
         self.color("white")
-        self.x_move = BALL_SPEED
-        self.y_move = BALL_SPEED
+        self.x_move = self.move_speed
+        self.y_move = self.move_speed
 
     def move(self):
         new_x = self.xcor() + self.x_move
@@ -22,3 +22,9 @@ class Ball(Turtle):
 
     def bounce_x(self):
         self.x_move *= -1
+        self.sleep_time *= 0.9
+
+    def reset_position(self):
+        self.goto(0, 0)
+        self.sleep_time = 0.1
+        self.bounce_x()
